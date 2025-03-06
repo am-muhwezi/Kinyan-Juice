@@ -1,0 +1,58 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+
+# Flask-related
+instance/
+*.sqlite3
+*.db
+
+# Config / Secrets
+config.py
+.env
+*.pem
+
+# Node.js / Vue.js dependencies
+node_modules/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.vite/
+.vscode/
+
+# Logs and runtime files
+logs/
+*.log
+*.out
+*.pid
+*.seed
+*.state
+
+# Editor & IDE-specific
+*~ 
+*.swp
+*.swo
+*.swn
+*.un~
+*.bak
+*.tmp
+.npm/
+.eslintcache
+.idea/
+.DS_Store
+
+# VS Code settings
+.vscode/
+*.code-workspace
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
