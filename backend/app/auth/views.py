@@ -14,8 +14,8 @@ from werkzeug.exceptions import Conflict, BadRequest
 auth_namespace = Namespace(
     'auth', description="namespace for all authentication")
 
-signUp_model = auth_namespace.model(
-    'SignUp', {
+signup_model = auth_namespace.model(
+    'Signup', {
         'id': fields.Integer(),
         'fullname': fields.String(required=True, description="A Username"),
         'email': fields.String(required=True, description="An Email Address"),
@@ -47,7 +47,7 @@ login_model = auth_namespace.model(
 @auth_namespace.route('/signup')
 class SignUp(Resource):
 
-    @auth_namespace.expect(signUp_model)
+    @auth_namespace.expect(signup_model)
     @auth_namespace.marshal_with(user_model)
     def post(self):
         """
@@ -55,20 +55,17 @@ class SignUp(Resource):
         """
         data = request.get_json()
 
-        try:
-            new_user = User(
-                fullname=data.get('fullname'),
-                email=data.get('email'),
-                password=generate_password_hash(data.get('password')),
-                )
-            new_user.save_user()
+        
+        new_user = User(
+            fullname=data.get('fullname'),
+            email=data.get('email'),
+            password=generate_password_hash(data.get('password')),
+            )
+        new_user.save()
 
-            return new_user, HTTPStatus.CREATED
+        return new_user, HTTPStatus.CREATED
 
-        except Exception as e:
-            raise Conflict(
-                f"User with email {data.get('email')} already exists") from e
-
+        
     
 
 
@@ -98,7 +95,6 @@ class Login(Resource):
 
             response = {
                 'access_token': access_token,
-                'refresh_token': refresh_token
             }
 
             return response, HTTPStatus.OK

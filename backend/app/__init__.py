@@ -1,22 +1,38 @@
 from flask import Flask
+from flask_restx import Api
+from flask_jwt_extended import JWTManager
 from .utils import db
+from flask_cors import CORS
 from .config.config import Config_dict
 from .auth.views import auth_namespace
 from .models.users_db_model import User
-from flask_restx import Api
-from flask_jwt_extended import JWTManager
+from flask_migrate import Migrate
 
-def create_app(config=Config_dict['prod']):
+
+
+def create_app(config=Config_dict['dev']):
+
     app = Flask(__name__)
 
+    CORS(app, supports_credentials=True)  
     app.config.from_object(config)
     db.init_app(app)
-    api = Api(app, title='KinyanJuice', version='1.0', description='KinyanJuice API')
+    api = Api(app)
 
     jwt = JWTManager(app)
 
+
+    migrate = Migrate(app, db)
     api.add_namespace(auth_namespace, path='/auth')
 
+
+    @app.shell_context_processor
+    def make_shell_context():
+        return {
+               'db': db,
+               'User': User
+            
+            }
 
 
     return app
