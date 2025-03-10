@@ -94,7 +94,7 @@ class Login(Resource):
             refresh_token = create_refresh_token(identity=user.fullname)
 
             response = {
-                'access_token': access_token,
+                'access_token': access_token
             }
 
             return response, HTTPStatus.OK
