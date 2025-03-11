@@ -18,22 +18,35 @@ export const signup = async (userData) => {
 };
 
 
-
 export const login = async (email, password) => {
   try {
-    const response = await axios.post(
-      `${BASE_URL}/auth/login`, // Adjust this based on your Flask API
-      { email, password },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true, // Ensures cookies/auth are sent
-      }
-    );
-    return response.data; // Return only data for cleaner handling
+    const response = await axios.post(`${BASE_URL}/auth/login`, { email, password }, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true, // Only useful if using cookies
+    });
+
+    // Store token in localStorage
+    const token = response.data.access_token; // Adjust based on Flask response
+    localStorage.setItem("token", token);
+
+    return response.data;
   } catch (error) {
     console.error("Login Error:", error.response ? error.response.data : error);
     throw error;
   }
 };
+
+
+export const getOrders = async () => {
+  try {
+      const response = await axios.get(`${BASE_URL}/products/products`, {
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Get Orders Error:", error.response ? error.response.data : error);
+      throw error;
+    }
+  };

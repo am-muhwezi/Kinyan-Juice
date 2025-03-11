@@ -5,7 +5,9 @@ from .utils import db
 from flask_cors import CORS
 from .config.config import Config_dict
 from .auth.views import auth_namespace
+from .products.views import product_namespace
 from .models.users_db_model import User
+from .models.products import Product
 from flask_migrate import Migrate
 
 
@@ -24,14 +26,15 @@ def create_app(config=Config_dict['dev']):
 
     migrate = Migrate(app, db)
     api.add_namespace(auth_namespace, path='/auth')
+    api.add_namespace(product_namespace, path='/products')
 
 
     @app.shell_context_processor
     def make_shell_context():
         return {
                'db': db,
-               'User': User
-            
+               'User': User,
+               'Products': Product
             }
 
 
