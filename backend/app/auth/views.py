@@ -5,9 +5,6 @@ from ..models.users_db_model import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import (
     create_access_token,
-    create_refresh_token,
-    jwt_required,
-    get_jwt_identity
 )
 from werkzeug.exceptions import Conflict, BadRequest
 
@@ -91,7 +88,6 @@ class Login(Resource):
                                                       password):
 
             access_token = create_access_token(identity=user.fullname)
-            refresh_token = create_refresh_token(identity=user.fullname)
 
             response = {
                 'access_token': access_token

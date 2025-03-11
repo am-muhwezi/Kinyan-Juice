@@ -12,6 +12,7 @@
 
 <script>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import { login } from "@/services/api.js";
 
 export default {
@@ -19,11 +20,13 @@ export default {
     const email = ref("");
     const password = ref("");
     const error = ref("");
+    const router = useRouter();
 
     const handleLogin = async () => {
       try {
         const response = await login(email.value, password.value);
         alert("Login successful!");
+        router.push("/orders");
       } catch (err) {
         error.value = err.response?.data?.message || "Login failed!";
       }
